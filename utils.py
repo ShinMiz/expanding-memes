@@ -54,3 +54,19 @@ def check_cuda():
         print(f"✅ CUDA available: {device_name}")
     else:
         print("⚠️ CUDA not available. Using CPU only.")
+
+
+def structure_facts(facts_for_question_raw: dict[str, list[str]]) -> dict[str, list[dict]]:
+    structured = {}
+    for q, fact_list in facts_for_question_raw.items():
+        structured[q] = [
+            {
+                "fact": f,
+                "tags": [],  # 必要なら自動タグ付けロジックを入れても良い
+                "bias": "neutral",  # もしくは "low", "high" など手動であとから調整
+                "source": "unknown"  # 今後 source 推定も可能
+            }
+            for f in fact_list
+        ]
+    return structured
+    

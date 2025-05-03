@@ -28,4 +28,7 @@ async def main_async(n_sessions=10):
 
 
 if __name__ == "__main__":
-    asyncio.run(main_async())
+    import nest_asyncio
+    nest_asyncio.apply()
+    asyncio.run(main_async(n_sessions=5))  # 例
+

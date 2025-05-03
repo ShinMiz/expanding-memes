@@ -216,3 +216,65 @@ class Agent:
         agent.memory = [(item["meme"], item["score"]) for item in data.get("memory", [])]
         agent.retained_insights = data.get("retained_insights", "")
         return agent
+
+
+def generate_persona(seed=None, spread=1.5):
+    """
+    Generate a persona with more diversity in trait values.
+    The spread parameter controls how extreme traits can be.
+    """
+    rng = np.random.default_rng(seed) if seed is not None else np.random.default_rng()
+
+    persona_vector = {}
+    for layer_name, params in layers.items():
+        layer_vector = {}
+        for param in params:
+            # Normal distribution, clipped to [-1, 1], but spread out
+            val = rng.normal(loc=0.0, scale=0.6 * spread)  # wider variance
+            val = max(-1.0, min(1.0, val))  # clip between -1 and 1
+            layer_vector[param] = val
+        persona_vector[layer_name] = layer_vector
+    persona_vector["meta"] = {
+    "provocativeness": rng.uniform(0.7, 1.0),  # 常に高め
+    "politeness": rng.uniform(0.0, 0.3),        # 低め（礼儀なし）
+    "certainty_bias": rng.uniform(0.8, 1.0),    # 言い切る傾向
+    "polarization_drive": rng.uniform(0.7, 1.0) # 二極化促進
+    }
+    return persona_vector
+
+
+
+def generate_description(mixed_vector):
+    description_parts = []
+    for layer_name, params in mixed_vector.items():
+        # 重要な特徴量（絶対値の大きい順に2つ）
+        top_features = sorted(params.items(), key=lambda x: -abs(x[1]))[:2]
+        desc = f"[{layer_name}] " + ", ".join(
+            f"{k.replace('_', ' ')} ({'high' if v > 0 else 'low'})"
+            for k, v in top_features
+        )
+        description_parts.append(desc)
+    return " ".join(description_parts)
+
+async def form_internal_model_async(agent, question: str) -> str:
+    memes = [m for m, _ in agent.memory]
+    prompt = form_internal_model_async_prompt(agent,memes,question)
+    return (await query_ollama_async(prompt)).strip()
+
+
+def get_mutation_prob(agent: Agent) -> float:
+    base = 0.05  # 最低限の変異率
+    tendency = agent.persona.get("cognitive_basis", {}).get("exploration_tendency", 0)
+    return base + 0.2 * max(0.0, tendency)  # 0.05〜0.25に拡張
+
+
+async def introspect_agent_async(agent, question: str) -> str:
+    beliefs = [m for m, _ in agent.memory]
+    prompt = introspect_agent_async_prompt(question,beliefs).strip()
+
+    return (await query_ollama_async(prompt)).strip()
+
+
+async def retain_insights_async(introspection_output: str) -> str:
+    prompt = f"From this introspection:\n'{introspection_output}'\nSummarize key strategies to retain."
+    return (await query_ollama_async(prompt)).strip()

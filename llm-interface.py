@@ -78,6 +78,59 @@ def fix_json_like_text(text: str) -> str:
             continue
     return json.dumps(cleaned, indent=2)
 
+# グローバルで定義（ファイル冒頭などに置く）
+sem = asyncio.Semaphore(1)  # 最大同時に3つまで実行
+
+# ラッパー関数を定義（別名でもよい）
+async def limited_generate_reaction_profile(persona_prompt: str, meme_text: str, model_name: str = 'dolphin-mistral'):
+    async with sem:
+        return await generate_reaction_profile_llm_async(persona_prompt, meme_text, model_name)
+
+
+ollama_cache = {}
+
+# 実際のリクエスト実行を行う内部関数（システムプロンプト込み）
+async def query_ollama_async_(prompt: str, model: str = "dolphin-mistral", temperature: float = 1.0) -> str:
+    #prompt = prompt + "\n" + prompt_noise(agent.id)
+    prompt = prompt + prompt_noise()
+    key = hash_prompt(prompt + str(temperature))
+    if key in ollama_cache:
+        return ollama_cache[key]
+
+    system_prompt =  query_ollama_async_system_promopt()
+
+    timeout = aiohttp.ClientTimeout(total=None)
+    async with aiohttp.ClientSession(timeout=timeout) as session:
+        async with session.post(
+            "http://localhost:11434/api/chat",
+            json={
+                "model": model,
+                "system": system_prompt,
+                "messages": [{"role": "user", "content": prompt}],
+                "temperature": temperature,
+                "stream": False
+            }
+        ) as resp:
+            try:
+                data = await resp.json()
+                content = data.get("message", {}).get("content", "")
+                print("=== Raw LLM Content ===")
+                print(content)
+                ollama_cache[key] = content
+                return content
+            except Exception as e:
+                print("❌ Failed to parse JSON from ollama:")
+                text = await resp.text()
+                print("=== Raw response text ===")
+                print(text)
+                raise e
+
+# 外部から使うときはこちら：非同期セマフォ付き＋ラッパー
+async def query_ollama_async(prompt: str, model: str = "dolphin-mistral", temperature: float = 0.7) -> str:
+    async with sem:
+        return await query_ollama_async_(prompt, model=model, temperature=temperature)
+
+
 async def generate_reaction_profile_llm_async(
     persona_prompt: str,
     meme_text: str,

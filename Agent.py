@@ -11,13 +11,10 @@ from propmts import introspect_agent_async_prompt as introspect_agent_async_prom
 from config import n_agent, top_k, num_iter, top_n,layers,meme_categories,meme_vectors_by_category,initial_questions,facts_for_question
 from collections import defaultdict
 import uuid
-
-
-
-# ==============================
-# Agent クラス（記憶・評価・伝播）
-# ==============================
 from typing import List, Dict, Tuple
+import json
+
+
 
 class Agent:
     def __init__(self, agent_id: int, persona: dict):
@@ -39,18 +36,19 @@ class Agent:
     async def evaluate_meme_async(self, meme_text: str):
         if not self.is_serious():
             print(f"😒 Agent {self.id} is not serious enough to evaluate meme: {meme_text}")
-            return None  # ミーム評価スキップ
+            #return None  # ミーム評価スキップ
+            return await limited_generate_reaction_profile(self.prompt, meme_text)
         try:
             return await limited_generate_reaction_profile(self.prompt, meme_text)
         except Exception as e:
             print(f"❌ Error evaluating meme for Agent {self.id}: {e}")
             return None
+
     def update_tendencies(self, reaction_profiles: List[dict]):
         if not reaction_profiles:
             self.emotion_tendency = 0.0
             self.logic_tendency = 0.0
             return
-
         emotions = [compute_emotion_score(p) for p in reaction_profiles]
         logics = [compute_logic_score(p) for p in reaction_profiles]
         self.emotion_tendency = float(np.mean(emotions))
@@ -99,27 +97,20 @@ class Agent:
         prompt = f"""
         You are an unapologetic, highly opinionated civic strategist.
         You have a unique personality shaped by strong meme exposure.
-
         You are now being interviewed on the topic:
         "{question}"
-
         Based on your internal worldview:
         "{internal}"
-
         {fact_section}
-
         The following conceptual preferences describe the rhetorical force, emotional tone, and ideological stance you should adopt:
         {concept_hint}
-
         You must provide a **concrete, implementable proposal** or radical stance.
         Do NOT summarize. Do NOT hedge. Do NOT use abstract language.
-
         Your answer must:
         - Describe a specific policy, mechanism, or action
         - Avoid vague words like “should consider” or “might”
         - Include a social domain, method, or consequence
         - Be polarizing, if necessary
-
         Respond in 1–3 direct sentences only. No explanations or disclaimers.
         """.strip()
 
@@ -167,16 +158,12 @@ class Agent:
             You are a neutral and thoughtful psychiatrist.
             Your task is to make very small, evidence-based adjustments to the psychological traits of an agent,
             based on their current personality parameters and the set of meme-like statements they have recently adopted.
-
             The goal is to gently reflect how exposure to these ideas might shape the agent's inner tendencies,
             without introducing bias or extreme changes.
-
             Here is the agent's current editable personality profile (only the traits listed are allowed to be modified):
             {json.dumps(editable_layers, indent=2, ensure_ascii=False)}
-
             And here are the meme-like messages the agent has recently adopted:
             {json.dumps(adopted_memes, indent=2, ensure_ascii=False)}
-
             Rules:
             - Modify only the numeric values shown above, by no more than ±0.05
             - All final values must remain within the range [-1.0, 1.0]
@@ -227,30 +214,33 @@ class Agent:
         return agent
 
 
-def generate_persona(seed=None, spread=1.5):
+def generate_persona(seed=None):
     """
-    Generate a persona with more diversity in trait values.
-    The spread parameter controls how extreme traits can be.
+    Generate an extremely polarized persona with trait values close to -1 or +1.
     """
     rng = np.random.default_rng(seed) if seed is not None else np.random.default_rng()
-
+    def extreme_value():
+        # -1 か +1 のどちらかを高確率で選ぶ（10%だけ0に近い値も許す）
+        if rng.uniform() < 0.1:
+            return float(rng.normal(0.0, 0.3))
+        else:
+            return 1.0 if rng.random() < 0.5 else -1.0
     persona_vector = {}
     for layer_name, params in layers.items():
         layer_vector = {}
         for param in params:
-            # Normal distribution, clipped to [-1, 1], but spread out
-            val = rng.normal(loc=0.0, scale=0.6 * spread)  # wider variance
-            val = max(-1.0, min(1.0, val))  # clip between -1 and 1
+            val = extreme_value()
+            val = max(-1.0, min(1.0, val))
             layer_vector[param] = val
         persona_vector[layer_name] = layer_vector
+    # メタパラメータも極端に
     persona_vector["meta"] = {
-    "provocativeness": rng.uniform(0.7, 1.0),  # 常に高め
-    "politeness": rng.uniform(0.0, 0.3),        # 低め（礼儀なし）
-    "certainty_bias": rng.uniform(0.8, 1.0),    # 言い切る傾向
-    "polarization_drive": rng.uniform(0.7, 1.0) # 二極化促進
+        "provocativeness": rng.choice([0.95, 1.0]),
+        "politeness": rng.choice([0.0, 0.1]),
+        "certainty_bias": rng.choice([0.9, 1.0]),
+        "polarization_drive": rng.choice([0.9, 1.0])
     }
     return persona_vector
-
 
 
 def generate_description(mixed_vector):

@@ -26,7 +26,7 @@ def generate_initial_memes_async_prompt(question,concept_hint) -> str:
             {concept_hint}\n
             """
 
-def generate_reaction_profile_llm_asyn_prompt_system() -> str:
+def generate_reaction_profile_llm_async_prompt_system() -> str:
     return f"""
     You are an evaluator. Your only task is to return a valid JSON object with exactly 16 keys, 
         each a numeric value between -1.0 and 1.0. 

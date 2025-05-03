@@ -17,6 +17,7 @@ from config import n_agent, top_k, num_iter, top_n,layers,meme_categories,meme_v
 import networkx as nx
 from collections import defaultdict
 import uuid
+import json
 
 
 facts_for_question = structure_facts(facts_for_question)

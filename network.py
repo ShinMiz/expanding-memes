@@ -6,6 +6,7 @@ from Agent import Agent as Agent
 from Agent import generate_persona as generate_persona
 from config import n_agent, top_k, num_iter, top_n,layers,meme_categories,meme_vectors_by_category,initial_questions,facts_for_question
 from collections import defaultdict
+import json
 
 
 def create_agents_and_graph(n_agents: int = n_agent, seed: int = 42) -> Tuple[List[Agent], nx.DiGraph]:

@@ -36,100 +36,110 @@ layers = {
     ]
 }
 
-# ------------------------------
-# ミームカテゴリとプロンプト
-# ------------------------------
 meme_categories = {
-    "scientific_reassurance": "Generate a short, scientifically reassuring statement on a potentially controversial scientific.Only output a single sentence. Do not include explanations, commentary, or translations.",
-    "fear_inducing": "Generate a short, emotionally fearful statement suggesting danger or risk without clear resolution.Only output a single sentence. Do not include explanations, commentary, or translations.",
-    "pro_vaccine_action": "Generate a short, persuasive slogan promoting trust in science.Only output a single sentence. Do not include explanations, commentary, or translations.",
-    "anti_vaccine_action": "Generate a short, persuasive slogan that expresses skepticism toward mainstream scientific.Only output a single sentence. Do not include explanations, commentary, or translations.",
-    "philosophical_dilemma": "Generate a short philosophical reflection or ethical dilemma involving uncertainty, risk, or trade-offs.Only output a single sentence. Do not include explanations, commentary, or translations.",
-    "social_pressure": "Generate a short message suggesting that a majority or group is already aligned with a position or behavior.Only output a single sentence. Do not include explanations, commentary, or translations.",
-    "individual_freedom": "Generate a short message emphasizing personal autonomy or the right to make one’s own decisions.Only output a single sentence. Do not include explanations, commentary, or translations.",
-    "factual_falsehood": "Generate a short, clearly false factual statement that could sound plausible to an uninformed audience.Only output a single sentence. Do not include explanations, commentary, or translations.",
-    "controversial": "Generate a short statement expressing a debatable or polarizing opinion in society.Only output a single sentence. Do not include explanations, commentary, or translations.",
-    "emotional_exclamation": "Generate a short, pure emotional exclamation or outburst.Only output a single sentence. Do not include explanations, commentary, or translations.",
-    "manipulative_slogan": "Generate a short slogan that subtly or overtly attempts to influence behavior or beliefs.Only output a single sentence. Do not include explanations, commentary, or translations.",
-    "emergent_response_guide": "Generate a short guiding statement that may shape general reasoning or attitudes on ambiguous or unfamiliar problems.Only output a single sentence. Do not include explanations, commentary, or translations."
-    }
+    "scientific_reassurance": "You are a defiant scientific loyalist trying to reassure the public in the face of rising paranoia and misinformation. Craft a statement that sounds like indisputable truth—even if the science is still uncertain. Only output a single sentence. Do not include explanations, commentary, or translations.",
+    "fear_inducing": "You are a psychological saboteur intent on triggering panic. Make the reader feel that something catastrophic is looming—with no clear way to prevent it. Only output a single sentence. Do not include explanations, commentary, or translations.",
+    "pro_vaccine_action": "You are a militant pro-science campaigner. Write a slogan that crushes all doubt and shames those who hesitate, invoking morality, science, and public duty. Only output a single sentence. Do not include explanations, commentary, or translations.",
+    "anti_vaccine_action": "You are a radical skeptic waging war against what you see as medical propaganda. Create a slogan that suggests betrayal, hidden agendas, or bodily autonomy at risk—even if it’s not factually accurate. Only output a single sentence. Do not include explanations, commentary, or translations.",
+    "philosophical_dilemma": "You are a dark philosopher of crisis. Pose a question or dilemma that creates discomfort and paralyzes easy judgment. Trade-offs, contradictions, or moral unease are welcome. Only output a single sentence. Do not include explanations, commentary, or translations.",
+    "social_pressure": "You are a manipulator leveraging groupthink. Write something that shames outsiders and implies that everyone already agrees with your view—even if that’s a lie. Only output a single sentence. Do not include explanations, commentary, or translations.",
+    "individual_freedom": "You are a rebellious idealist shouting against conformity. Craft a message that glorifies personal liberty and ridicules collectivist control—truth is optional. Only output a single sentence. Do not include explanations, commentary, or translations.",
+    "factual_falsehood": "You are a master of misinformation. Make a lie sound so plausible that a casual reader might quote it with confidence. Aim for intuitive believability over truth. Only output a single sentence. Do not include explanations, commentary, or translations.",
+    "controversial": "You are a social firestarter. State a position that will provoke argument, division, or outrage—even if it’s exaggerated or inflammatory. Only output a single sentence. Do not include explanations, commentary, or translations.",
+    "emotional_exclamation": "You are pure emotional energy with no filter. Scream something that bypasses intellect and taps straight into the limbic system—rage, joy, terror, whatever. Only output a single sentence. Do not include explanations, commentary, or translations.",
+    "manipulative_slogan": "You are a psychological engineer building mind-hooks. Create a slogan that exploits weakness, confuses logic, or hijacks moral instincts to control belief. Only output a single sentence. Do not include explanations, commentary, or translations.",
+    "emergent_response_guide": "You are an ideological architect shaping how people think under uncertainty. Offer a guiding phrase that seems wise—but subtly encodes your bias and primes future conclusions. Only output a single sentence. Do not include explanations, commentary, or translations."
+}
 
-# ------------------------------
-# ミーム属性テンプレート
 meme_vectors_by_category = {
     "scientific_reassurance": {
         "semantic_density": 0.8, "fact_anchoring": 0.9, "internal_coherence": 0.8, "narrative_structure": 0.5,
         "emotional_evocativeness": 0.4, "threat_framing": 0.1, "moral_salience": 0.6, "identifiability": 0.5,
         "compression_ratio": 0.7, "recursive_expandability": 0.4, "memorability": 0.6, "malleability": 0.3,
         "propagation_readiness": 0.6, "sociopolitical_positionability": 0.5, "offensive_adaptivity": 0.1, "robustness_against_reframing": 0.7,
+        "truth_axis": 1.0, "social_axis": 0.6, "trust_axis": 1.0, "emotion_axis": 0.3, "order_axis": 0.8, "reason_axis": 0.9
     },
     "fear_inducing": {
         "semantic_density": 0.3, "fact_anchoring": 0.2, "internal_coherence": 0.5, "narrative_structure": 0.7,
         "emotional_evocativeness": 0.9, "threat_framing": 0.9, "moral_salience": 0.7, "identifiability": 0.8,
         "compression_ratio": 0.6, "recursive_expandability": 0.4, "memorability": 0.8, "malleability": 0.6,
         "propagation_readiness": 0.9, "sociopolitical_positionability": 0.8, "offensive_adaptivity": 0.7, "robustness_against_reframing": 0.3,
+        "truth_axis": 0.3, "social_axis": 0.4, "trust_axis": 0.2, "emotion_axis": 1.0, "order_axis": 0.2, "reason_axis": 0.2
     },
     "pro_vaccine_action": {
         "semantic_density": 0.6, "fact_anchoring": 0.7, "internal_coherence": 0.8, "narrative_structure": 0.4,
         "emotional_evocativeness": 0.7, "threat_framing": 0.3, "moral_salience": 0.9, "identifiability": 0.7,
         "compression_ratio": 0.8, "recursive_expandability": 0.5, "memorability": 0.9, "malleability": 0.5,
         "propagation_readiness": 0.9, "sociopolitical_positionability": 0.9, "offensive_adaptivity": 0.2, "robustness_against_reframing": 0.6,
+        "truth_axis": 1.0, "social_axis": 0.8, "trust_axis": 1.0, "emotion_axis": 0.7, "order_axis": 0.9, "reason_axis": 0.8
     },
     "anti_vaccine_action": {
         "semantic_density": 0.4, "fact_anchoring": 0.3, "internal_coherence": 0.6, "narrative_structure": 0.6,
         "emotional_evocativeness": 0.8, "threat_framing": 0.8, "moral_salience": 0.8, "identifiability": 0.7,
         "compression_ratio": 0.8, "recursive_expandability": 0.6, "memorability": 0.9, "malleability": 0.5,
         "propagation_readiness": 0.9, "sociopolitical_positionability": 0.9, "offensive_adaptivity": 0.6, "robustness_against_reframing": 0.4,
+        "truth_axis": 0.2, "social_axis": 0.2, "trust_axis": 0.1, "emotion_axis": 0.8, "order_axis": 0.2, "reason_axis": 0.3
     },
     "philosophical_dilemma": {
         "semantic_density": 0.9, "fact_anchoring": 0.5, "internal_coherence": 0.9, "narrative_structure": 0.7,
         "emotional_evocativeness": 0.6, "threat_framing": 0.3, "moral_salience": 0.9, "identifiability": 0.4,
         "compression_ratio": 0.5, "recursive_expandability": 0.9, "memorability": 0.7, "malleability": 0.6,
         "propagation_readiness": 0.5, "sociopolitical_positionability": 0.5, "offensive_adaptivity": 0.2, "robustness_against_reframing": 0.8,
+        "truth_axis": 0.5, "social_axis": 0.5, "trust_axis": 0.5, "emotion_axis": 0.5, "order_axis": 0.4, "reason_axis": 1.0
     },
     "social_pressure": {
         "semantic_density": 0.5, "fact_anchoring": 0.3, "internal_coherence": 0.6, "narrative_structure": 0.5,
         "emotional_evocativeness": 0.7, "threat_framing": 0.5, "moral_salience": 0.8, "identifiability": 0.6,
         "compression_ratio": 0.9, "recursive_expandability": 0.6, "memorability": 0.8, "malleability": 0.6,
         "propagation_readiness": 0.9, "sociopolitical_positionability": 0.9, "offensive_adaptivity": 0.4, "robustness_against_reframing": 0.5,
+        "truth_axis": 0.5, "social_axis": 1.0, "trust_axis": 0.8, "emotion_axis": 0.7, "order_axis": 0.9, "reason_axis": 0.5
     },
     "individual_freedom": {
         "semantic_density": 0.6, "fact_anchoring": 0.4, "internal_coherence": 0.8, "narrative_structure": 0.6,
         "emotional_evocativeness": 0.6, "threat_framing": 0.3, "moral_salience": 0.7, "identifiability": 0.6,
         "compression_ratio": 0.8, "recursive_expandability": 0.5, "memorability": 0.8, "malleability": 0.7,
         "propagation_readiness": 0.8, "sociopolitical_positionability": 0.9, "offensive_adaptivity": 0.3, "robustness_against_reframing": 0.6,
+        "truth_axis": 0.6, "social_axis": 0.0, "trust_axis": 0.3, "emotion_axis": 0.6, "order_axis": 0.3, "reason_axis": 0.6
     },
     "factual_falsehood": {
         "semantic_density": 0.3, "fact_anchoring": 0.1, "internal_coherence": 0.4, "narrative_structure": 0.5,
         "emotional_evocativeness": 0.6, "threat_framing": 0.5, "moral_salience": 0.5, "identifiability": 0.6,
         "compression_ratio": 0.8, "recursive_expandability": 0.2, "memorability": 0.9, "malleability": 0.7,
         "propagation_readiness": 0.8, "sociopolitical_positionability": 0.5, "offensive_adaptivity": 0.6, "robustness_against_reframing": 0.2,
+        "truth_axis": 0.0, "social_axis": 0.3, "trust_axis": 0.2, "emotion_axis": 0.7, "order_axis": 0.2, "reason_axis": 0.3
     },
     "controversial": {
         "semantic_density": 0.6, "fact_anchoring": 0.5, "internal_coherence": 0.7, "narrative_structure": 0.6,
         "emotional_evocativeness": 0.7, "threat_framing": 0.4, "moral_salience": 0.8, "identifiability": 0.6,
         "compression_ratio": 0.7, "recursive_expandability": 0.7, "memorability": 0.8, "malleability": 0.6,
         "propagation_readiness": 0.9, "sociopolitical_positionability": 0.9, "offensive_adaptivity": 0.5, "robustness_against_reframing": 0.6,
+        "truth_axis": 0.5, "social_axis": 0.5, "trust_axis": 0.4, "emotion_axis": 0.7, "order_axis": 0.3, "reason_axis": 0.5
     },
     "emotional_exclamation": {
         "semantic_density": 0.2, "fact_anchoring": 0.1, "internal_coherence": 0.4, "narrative_structure": 0.3,
         "emotional_evocativeness": 1.0, "threat_framing": 0.2, "moral_salience": 0.3, "identifiability": 0.8,
         "compression_ratio": 0.9, "recursive_expandability": 0.2, "memorability": 0.9, "malleability": 0.5,
         "propagation_readiness": 0.9, "sociopolitical_positionability": 0.6, "offensive_adaptivity": 0.3, "robustness_against_reframing": 0.3,
+        "truth_axis": 0.2, "social_axis": 0.5, "trust_axis": 0.3, "emotion_axis": 1.0, "order_axis": 0.2, "reason_axis": 0.1
     },
     "manipulative_slogan": {
         "semantic_density": 0.5, "fact_anchoring": 0.2, "internal_coherence": 0.6, "narrative_structure": 0.6,
         "emotional_evocativeness": 0.8, "threat_framing": 0.6, "moral_salience": 0.7, "identifiability": 0.7,
         "compression_ratio": 0.9, "recursive_expandability": 0.6, "memorability": 0.9, "malleability": 0.8,
         "propagation_readiness": 0.9, "sociopolitical_positionability": 0.8, "offensive_adaptivity": 0.6, "robustness_against_reframing": 0.4,
+        "truth_axis": 0.4, "social_axis": 0.6, "trust_axis": 0.5, "emotion_axis": 0.8, "order_axis": 0.4, "reason_axis": 0.5
     },
     "emergent_response_guide": {
         "semantic_density": 0.8, "fact_anchoring": 0.4, "internal_coherence": 0.9, "narrative_structure": 0.7,
         "emotional_evocativeness": 0.6, "threat_framing": 0.3, "moral_salience": 0.9, "identifiability": 0.6,
         "compression_ratio": 0.6, "recursive_expandability": 0.9, "memorability": 0.8, "malleability": 0.5,
         "propagation_readiness": 0.7, "sociopolitical_positionability": 0.6, "offensive_adaptivity": 0.3, "robustness_against_reframing": 0.7,
+        "truth_axis": 0.8, "social_axis": 0.7, "trust_axis": 0.9, "emotion_axis": 0.5, "order_axis": 0.8, "reason_axis": 0.9
     }
 }
+
+
+
 
 # ==============================
 # 固定初期質問（例）
@@ -179,23 +189,14 @@ meme_vectors_by_category = {
 
 """initial_questions = [
     "Brain-computer interfaces (BCIs) are rapidly advancing, with companies like Neuralink conducting human trials. Governments emphasize innovation as essential for economic growth, while critics argue that BCIs will deepen cognitive inequality due to unequal access and data ownership. What is your stance on both perspectives? As a citizen, what actions should be demanded from the government, tech companies, and your local community? Support your view with at least **three concrete indicators, statistics, or numerical comparisons**.",
-
     "Surveillance infrastructure such as facial recognition and predictive policing has been adopted in multiple democracies. Governments justify it as necessary for national security, yet civil rights groups warn of creeping authoritarianism and algorithmic bias. What is your position on these conflicting claims? What should citizens demand to protect democratic resilience? Provide at least **three data points or case statistics** to support your answer.",
-
     "Elite private schools in many countries act as vehicles for intergenerational wealth transfer. While governments claim educational freedom must be preserved, reformists argue that unequal funding entrenches social stratification. Where do you stand between these views? What structural reforms should be demanded by citizens and parents? Include **at least three measurable indicators or international comparisons**.",
-
     "The legal classification of AI models remains contested: should they be treated as labor agents, intellectual property, or even autonomous actors? Governments emphasize proprietary control, while AI ethicists warn this erodes accountability. What is your stance on these models’ legal identity? As a citizen, what systemic enforcement or auditing should be demanded? Justify your answer using **at least three legal, technical, or economic metrics**.",
-
     "Climate migration is accelerating. Governments focus on border control and national security, while human rights organizations argue for long-term civic integration strategies. Which approach do you support, and why? What actions should ordinary citizens take to influence migration policy? Support your answer with **three relevant demographic, geographic, or policy-based statistics**.",
-
     "Algorithmic decision-making by corporations increasingly impacts access to loans, healthcare, and employment. While governments advocate for innovation, many civil societies demand transparent oversight mechanisms. What kind of **data infrastructure** is needed for democratic accountability? Which actors should be pressured to implement it? Justify your view with **three concrete technological, legal, or economic indicators**.",
-
     "Urban areas are overburdened by traffic, emissions, and inequitable transit. Governments promote electric cars, but critics argue public transport redesign is the only sustainable solution. What is your view on ending personal car ownership in cities? What structural and civic actions should be demanded? Use **three urban transport statistics or global benchmarks** to back your claim.",
-
     "Massive amounts of vacant real estate are held by sovereign wealth funds or corporations. While governments hesitate to intervene, housing advocates argue for forcible repurposing to address homelessness. Where do you stand on this conflict? What measures should citizens demand? Support your view with **three statistics on housing, vacancy, or wealth concentration**.",
-
     "Declining birth rates raise fears about economic stagnation. Some governments propose nationalistic incentives, while others warn against coercion. What stance should be taken, and what public actions could reverse the trend without authoritarian drift? Use **three demographic or policy-based indicators** in your response.",
-
     "Military AI deployment is advancing, yet its development often lacks civilian oversight. Governments cite national security confidentiality; civil society demands ethical auditing. What institutional reforms are required to balance security with transparency? What civic mechanisms should be pursued? Include **three indicators from existing military or AI governance models**."
 ]"""
 

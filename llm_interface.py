@@ -7,18 +7,16 @@ import json
 import json5
 import re
 from propmts import query_ollama_async_system_prompt as query_ollama_async_system_prompt
-from propmts import generate_reaction_profile_llm_asyn_prompt_system as generate_reaction_profile_llm_asyn_prompt_system
-from propmts import generate_reaction_profile_llm_asyn_prompt_user as generate_reaction_profile_llm_asyn_prompt_user
+from propmts import generate_reaction_profile_llm_async_prompt_system as generate_reaction_profile_llm_async_prompt_system
+from propmts import generate_reaction_profile_llm_async_prompt_user as generate_reaction_profile_llm_async_prompt_user
 from config import n_agent, top_k, num_iter, top_n,layers,meme_categories,meme_vectors_by_category,initial_questions,facts_for_question
 from collections import defaultdict
 import uuid
-
-
+import json
 
 
 ollama_cache = {}
 sem = asyncio.Semaphore(1)  # 最大同時に1つまで実行（変更可）
-
 
 def prompt_noise() -> str:
     noise_options = [
@@ -157,9 +155,9 @@ async def generate_reaction_profile_llm_async(
         "self_expression_need", "action_orientation", "retention_resistance"
     }
 
-    base_system_prompt = generate_reaction_profile_llm_asyn_prompt_system()
+    base_system_prompt = generate_reaction_profile_llm_async_prompt_system()
 
-    base_user_prompt = generate_reaction_profile_llm_asyn_prompt_user.strip()
+    base_user_prompt = generate_reaction_profile_llm_async_prompt_user.strip()
 
     for attempt in range(3):
         # 🛠 retry時にはプロンプトをさらに強調して矯正
@@ -242,8 +240,8 @@ async def generate_reaction_profile_llm_async(persona_prompt: str, meme_text: st
     if key in reaction_cache:
         return reaction_cache[key]
 
-    system_prompt = generate_reaction_profile_llm_asyn_prompt_system()
-    user_prompt = generate_reaction_profile_llm_asyn_prompt_user.strip()
+    system_prompt = generate_reaction_profile_llm_async_prompt_system()
+    user_prompt = generate_reaction_profile_llm_async_prompt_user.strip()
 
     for attempt in range(3):
         if attempt > 0:

@@ -1,6 +1,12 @@
 import json
 from pathlib import Path
 import datetime
+from utils import save_json as save_json 
+from config import n_agent, top_k, num_iter, top_n,layers,meme_categories,meme_vectors_by_category,initial_questions,facts_for_question
+from collections import defaultdict
+import uuid
+
+
 
 LOG_DIR = Path("simulation_logs")
 LOG_DIR.mkdir(exist_ok=True)

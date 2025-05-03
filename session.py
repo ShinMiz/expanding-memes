@@ -1,12 +1,22 @@
 import asyncio
 import random
 import datetime
+from Agent import Agent as Agent
+from config import facts_for_question as facts_for_question
+from utils import structure_facts as structure_facts
+from config import initial_questions as initial_questions
+from meme_generation import generate_random_concept_vector as generate_random_concept_vector
+from evaluation import evaluate_and_propagate_async as evaluate_and_propagate_async
+from evaluation import update_agent_memories_async as update_agent_memories_async
+from network import update_edge_weights as update_edge_weights
+from evaluation import propagate_with_persuasion_async as propagate_with_persuasion_async
+from network import revise_connections as revise_connections
+from propmts import process_agent_async_prompt as process_agent_async_prompt
+from logging_utils import save_json as save_json
+from config import n_agent, top_k, num_iter, top_n,layers,meme_categories,meme_vectors_by_category,initial_questions,facts_for_question
+import networkx as nx
 from collections import defaultdict
-from utils import save_json, sigmoid_sharp, check_cuda,structure_facts
-from meme_generation import generate_random_concept_vector
-from llm_interface import query_ollama_async
-from evaluation import evaluate_and_propagate_async, update_agent_memories_async
-from network import revise_connections, update_edge_weights
+import uuid
 
 
 facts_for_question = structure_facts(facts_for_question)

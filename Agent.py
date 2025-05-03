@@ -1,8 +1,17 @@
 import random
 import numpy as np
 from typing import List, Tuple, Dict, Optional
-from .llm_interface import query_ollama_async
-from .utils import compute_emotion_score, compute_logic_score, generate_description
+from llm_interface import limited_generate_reaction_profile as limited_generate_reaction_profile
+from utils import compute_emotion_score as compute_emotion_score
+from utils import compute_logic_score as compute_logic_score
+from propmts import form_internal_model_async_prompt as form_internal_model_async_prompt
+from llm_interface import query_ollama_async as query_ollama_async
+from meme_generation import generate_concept_hint as generate_concept_hint
+from propmts import introspect_agent_async_prompt as introspect_agent_async_prompt
+from config import n_agent, top_k, num_iter, top_n,layers,meme_categories,meme_vectors_by_category,initial_questions,facts_for_question
+from collections import defaultdict
+import uuid
+
 
 
 # ==============================

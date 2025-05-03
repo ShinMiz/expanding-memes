@@ -2,12 +2,13 @@ import random
 import numpy as np
 import json
 from collections import defaultdict
-from llm_interface import query_ollama_async
-
-# ここでは外部提供される必要がある変数:
-# - meme_categories: Dict[str, str]
-# - meme_vectors_by_category: Dict[str, Dict[str, float]]
-# - generate_initial_memes_async_prompt: Callable[[str, str], str]
+from llm_interface import query_ollama_async as query_ollama_async
+from propmts import generate_initial_memes_async_prompt as generate_initial_memes_async_prompt
+from llm_interface import prompt_noise as prompt_noise
+from propmts import reformulate_memes_async_prompt as reformulate_memes_async_prompt
+from config import n_agent, top_k, num_iter, top_n,layers,meme_categories,meme_vectors_by_category,initial_questions,facts_for_question
+from typing import List, Dict, Tuple
+from collections import defaultdict
 
 
 def generate_random_concept_vector(std: float = 0.05) -> dict:

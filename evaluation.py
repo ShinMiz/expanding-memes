@@ -4,9 +4,20 @@ import random
 import numpy as np
 import networkx as nx
 from typing import List, Dict, Tuple
-from utils import compute_emotion_score, compute_logic_score, score_meme_against_profile, should_reject_meme, sigmoid_sharp
-from meme_generation import mutate_meme_async, reformulate_memes_async
-from llm_interface import query_ollama_async
+from propmts import evaluate_final_answer_async_prompt as evaluate_final_answer_async_prompt
+from utils import should_reject_meme as should_reject_meme
+from Agent import Agent as Agent
+from utils import score_meme_against_profile as score_meme_against_profile
+from utils import compute_emotion_score as compute_emotion_score
+from utils import compute_logic_score as compute_logic_score
+from network import compute_persuasion_strengths as compute_persuasion_strengths
+from utils import sigmoid_sharp as sigmoid_sharp
+from llm_interface import query_ollama_async as query_ollama_async
+from meme_generation import mutate_meme_async as mutate_meme_async
+from config import n_agent, top_k, num_iter, top_n,layers,meme_categories,meme_vectors_by_category,initial_questions,facts_for_question
+from collections import defaultdict
+import uuid
+
 
 
 async def evaluate_and_propagate_async(
@@ -55,6 +66,18 @@ async def evaluate_and_propagate_async(
 
     return transmissions
 
+async def process_task(aid: int, nid: int, meme: str, strength: float):
+    agent = id2agent[aid]
+    prob = get_mutation_prob(agent)
+    try:
+        meme_mutated = await mutate_meme_async(meme, prob=prob)
+        prompt = f"Try to convince the receiver of this meme with high persuasion strength. Meme: '{meme_mutated}'"
+        response = await query_ollama_async(prompt)
+        return (aid, nid, response.strip(), strength)
+    except Exception as e:
+        print(f"❌ Persuasion error {aid}->{nid}: {e}")
+        return (aid, nid, meme, strength)
+
 
 async def propagate_with_persuasion_async(
     agents,
@@ -65,18 +88,6 @@ async def propagate_with_persuasion_async(
     
     tasks = []
     id2agent = {agent.id: agent for agent in agents}
-
-    async def process_task(aid: int, nid: int, meme: str, strength: float):
-        agent = id2agent[aid]
-        prob = get_mutation_prob(agent)
-        try:
-            meme_mutated = await mutate_meme_async(meme, prob=prob)
-            prompt = f"Try to convince the receiver of this meme with high persuasion strength. Meme: '{meme_mutated}'"
-            response = await query_ollama_async(prompt)
-            return (aid, nid, response.strip(), strength)
-        except Exception as e:
-            print(f"❌ Persuasion error {aid}->{nid}: {e}")
-            return (aid, nid, meme, strength)
 
     for agent in agents:
         memes = agent.get_high_propagation_memes()
@@ -105,7 +116,7 @@ async def propagate_with_persuasion_async(
     return results
 
 async def evaluate_final_answer_async(answer: str, question: str) -> float:
-    prompt = evaluate_final_answer_async_prompt(meme, question).strip()
+    prompt = evaluate_final_answer_async_prompt(answer, question).strip()
 
     content = await query_ollama_async(prompt)
     

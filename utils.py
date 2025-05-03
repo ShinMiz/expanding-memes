@@ -4,6 +4,11 @@ import math
 import torch
 from pathlib import Path
 import datetime
+from config import n_agent, top_k, num_iter, top_n,layers,meme_categories,meme_vectors_by_category,initial_questions,facts_for_question
+from collections import defaultdict
+import uuid
+
+
 
 LOG_DIR = Path("simulation_logs")
 LOG_DIR.mkdir(exist_ok=True)
@@ -69,4 +74,3 @@ def structure_facts(facts_for_question_raw: dict[str, list[str]]) -> dict[str, l
             for f in fact_list
         ]
     return structured
-    

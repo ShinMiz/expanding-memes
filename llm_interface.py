@@ -6,6 +6,15 @@ import datetime
 import json
 import json5
 import re
+from propmts import query_ollama_async_system_prompt as query_ollama_async_system_prompt
+from propmts import generate_reaction_profile_llm_asyn_prompt_system as generate_reaction_profile_llm_asyn_prompt_system
+from propmts import generate_reaction_profile_llm_asyn_prompt_user as generate_reaction_profile_llm_asyn_prompt_user
+from config import n_agent, top_k, num_iter, top_n,layers,meme_categories,meme_vectors_by_category,initial_questions,facts_for_question
+from collections import defaultdict
+import uuid
+
+
+
 
 ollama_cache = {}
 sem = asyncio.Semaphore(1)  # 最大同時に1つまで実行（変更可）
@@ -97,7 +106,7 @@ async def query_ollama_async_(prompt: str, model: str = "dolphin-mistral", tempe
     if key in ollama_cache:
         return ollama_cache[key]
 
-    system_prompt =  query_ollama_async_system_promopt()
+    system_prompt =  query_ollama_async_system_prompt()
 
     timeout = aiohttp.ClientTimeout(total=None)
     async with aiohttp.ClientSession(timeout=timeout) as session:
